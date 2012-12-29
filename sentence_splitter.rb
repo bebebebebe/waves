@@ -3,8 +3,6 @@
 # Allows for ... within a sentence. Does not split on ! or ?
 
 
-# Three steps to turn a paragraph into the array of its sentences:
-
 def to_sentences(paragraph)
 
 #---------------- Step 1: Break up paragraph into pieces based on punctuation. 
@@ -18,26 +16,30 @@ def to_sentences(paragraph)
 #---------------- Step 2: Re-join some pieces so that embedded quotes and parenthetical remarks aren't broken.
 
  	new_sentences = []
-	old_count = 0
-	new_count = 0
+	old_count = 0						# position in old array built in Step 1
+	new_count = 0						# position in new array built now in Step 2
 		
 	while old_count < old_sentences.length
-		skip = 0
+										# each step in outer while loop adds a new element to new_sentences
+		skip = 0						# skip keeps track of how many elements of old_sentences are used
 		new_sentences[new_count] = old_sentences[old_count]
+
 		while old_count + skip < old_sentences.length and (new_sentences[new_count].count('"')%2 == 1 or new_sentences[new_count].count('(') != new_sentences[new_count].count(')'))
+										# each step in inner while loop checks last element of new_sentences for mismatched quotes or parentheses, ...										
+
 			if new_sentences[new_count].count(')') > new_sentences[new_count].count('(')
 				old_sentences[old_count] = old_sentences[old_count].sub!(/\)/, "")
 				break
-			end
-
+			end							# ... if there's a mismatched right parenthesis, deletes it, ...
 
 			if old_count + skip + 1 == old_sentences.length and (new_sentences[new_count].count('(') > new_sentences[new_count].count(')'))
 				old_sentences[old_count] = old_sentences[old_count].sub!(/\(/, "")
 				skip = -1
 				new_count -= 1
-				break
-			end
-
+				break					# ... if there's a mismatched left parenthesis or quote,
+			end							# joins next element of old_sentences to current new_sentence, unless
+										# reach end of paragraph with mismatch; then deletes mismatched ( or ',
+										# not joining subsequent elements of old_sentences to current new_sentence.
 			skip += 1
 			new_sentences[new_count] = new_sentences[new_count] + " " + old_sentences[old_count + skip]			
 		end
