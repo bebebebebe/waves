@@ -3,18 +3,25 @@
 # Allows for ... within a sentence. Does not split on ! or ?
 
 
+# Three steps to turn a paragraph into the array of its sentences:
+
 def to_sentences(paragraph)
+
+#---------------- Step 1: Break up paragraph into pieces based on punctuation. 
+
 	old_sentences = paragraph.split(/(?<=\."|\.\)|\.)(?<!\.\s\.|\.\s\."|\.\s\.\))\s(?!\.)|(?<=\.\s\.\s\.\s\."|\.\s\.\s\.\s\.\)|\.\s\.\s\.\s\.)\s/)
-								# (---exactly one dot before-----split-no dot after----) OR (-four dots before ---------------------------- split)
 										# splits on space in two cases: 1. if preceded by exactly one dot, possibly followed by ) or "
 										# 2. if preceded by four dots, possibly followed by ) or " 
+										# (exactly one dot before SPLIT no dot after) OR (four dots before SPLIT)
+
 	
+#---------------- Step 2: Re-join some pieces so that embedded quotes and parenthetical remarks aren't broken.
+
  	new_sentences = []
 	old_count = 0
 	new_count = 0
-	
-	
-	while old_count < old_sentences.length				# joins some sentences in split so quotes and parentheses aren't broken
+		
+	while old_count < old_sentences.length
 		skip = 0
 		new_sentences[new_count] = old_sentences[old_count]
 		while old_count + skip < old_sentences.length and (new_sentences[new_count].count('"')%2 == 1 or new_sentences[new_count].count('(') != new_sentences[new_count].count(')'))
@@ -40,14 +47,16 @@ def to_sentences(paragraph)
 	end
 
 
+#----------------  Step 3: Make sure each piece starts and ends with a single quote.
 
 	sentences_with_quotes = []
-	new_sentences.each do |x|		# makes sure the sentences start and end with '
+	new_sentences.each do |x|
 		x = x.chomp
 		x = "'"+x if x[0] != "'"
 		x = x+"'" if x[x.length-1] != "'"
 		sentences_with_quotes << x
 	end
+
 	return sentences_with_quotes
 
 end
