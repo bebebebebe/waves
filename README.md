@@ -18,7 +18,7 @@ Two programs:
 * waves_analyze.rb 
 
 	Returns paragraphs from the text containing a given word chosen by the user, with the 
-	chosen word in block capitals, and the speaker identified.
+	chosen word in block capitals, and each paragraph's speaker identified.
 
 	Returns information about a word's use (how much does each character use the word?).
 
