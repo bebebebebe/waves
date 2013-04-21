@@ -7,13 +7,13 @@ def text(section)
 	return 'waves' + section + '.txt'
 end
 
-def prelude_text(section)
-	return 'waves_prelude' + section + '.txt'
+def italics_text(section)
+	return 'waves_italics' + section + '.txt'
 end
 
-def prelude section												# returns two consecutive sentences
-	prelude = File.readlines(prelude_text(section)) - ["\n"]	# in one paragraph of section's prelude
-	random_paragraph = prelude[rand(prelude.length)]
+def italics section												# returns two consecutive sentences
+	italics = File.readlines(italics_text(section)) - ["\n"]	# in one paragraph of section's italics
+	random_paragraph = italics[rand(italics.length)]
 	sentences = to_sentences(random_paragraph)
 	n = rand(sentences.length - 1)
 	puts
@@ -47,7 +47,7 @@ def navigate
 	section_int = @section.to_i
 	if section_int < 9
 		@section = (section_int + 1).to_s
-		prelude @section
+		italics @section
 		reading
 	else puts "T H E   E N D"
 	end
@@ -56,5 +56,5 @@ end
 @section = '1'
 
 give_instructions
-prelude @section
+italics @section
 reading
